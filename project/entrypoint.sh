@@ -1,17 +1,11 @@
 #!/bin/sh
 
-DB_DIALECT="HSQLDB"
-DB_URL="jdbc:hsqldb:file:lavagna"
-DB_USER="sa"
-DB_PASS=""
+DB_DIALECT="MYSQL"
+DB_URL="jdbc:mysql://mysql_db:3306/lavagna?useUnicode=true&characterEncoding=utf-8&useSSL=false"
+DB_USER="root"
+DB_PASS="pass"
 SPRING_PROFILE="dev"
 
-# while true
-# do
-#     continue
-# done
-
-# Execute the web archive
 java -Xms64m -Xmx128m -Ddatasource.dialect="$DB_DIALECT" \
 -Ddatasource.url="$DB_URL" \
 -Ddatasource.username="$DB_USER" \

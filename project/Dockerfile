@@ -1,9 +1,10 @@
-FROM maven:3.8.6-jdk-8
+
+FROM openjdk:8-jre-alpine
 
 WORKDIR /lav
 
 COPY . .
 
-# RUN mvn verify
+RUN apk update && apk add ca-certificates && update-ca-certificates && apk add openssl
 
 ENTRYPOINT [ "sh", "./entrypoint.sh" ]

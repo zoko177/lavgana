@@ -2,3 +2,6 @@ Dockerfile
 init.sh
 demo.Dockerfile
 docker-compose.yml
+.git
+.gitignore
+.git modules

@@ -1,33 +1,32 @@
 volumes:
-  mysqldb:
-  saveDB:
+  sql_db:
 
 services:
   
   mysql_db:
-    image: mysql:latest
+    image: mysql:5.7.40-debian
+    container_name: mysql_db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: pass
-      MYSQL_DATABASE: billdb
+      MYSQL_DATABASE: lavagna
     healthcheck:
       test: "/usr/bin/mysql --user=root --password=pass --execute \"SHOW DATABASES;\""
       interval: 1s
       timeout: 1s
       retries: 20
     volumes:
-      - ./app/db:/docker-entrypoint-initdb.d
-      - saveDB:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+      - sql_db:/var/lib/mysql
 
-  python_app:
+  maven_app:
     build: 
       context: ./
     restart: always
+    environment:
+      spring.datasource.url: "jdbc:mysql://mysql_db:3306/lavagna"
     ports:
-      - "${port}:5000"
+      - 8080:8080
     depends_on:
       mysql_db:
         condition: service_healthy
-    volumes:
-      - ./app/in:/app/in
-      
