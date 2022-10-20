@@ -1,0 +1,33 @@
+volumes:
+  mysqldb:
+  saveDB:
+
+services:
+  
+  mysql_db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: billdb
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=pass --execute \"SHOW DATABASES;\""
+      interval: 1s
+      timeout: 1s
+      retries: 20
+    volumes:
+      - ./app/db:/docker-entrypoint-initdb.d
+      - saveDB:/var/lib/mysql
+
+  python_app:
+    build: 
+      context: ./
+    restart: always
+    ports:
+      - "${port}:5000"
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+    volumes:
+      - ./app/in:/app/in
+      
