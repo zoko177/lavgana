@@ -19,12 +19,9 @@ services:
       - ./db:/docker-entrypoint-initdb.d
       - sql_db:/var/lib/mysql
 
-  maven_app:
-    build: 
-      context: ./
+  app:
+    build: .
     restart: always
-    environment:
-      spring.datasource.url: "jdbc:mysql://mysql_db:3306/lavagna"
     ports:
       - 8080:8080
     depends_on:
