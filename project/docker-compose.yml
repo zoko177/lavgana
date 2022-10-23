@@ -1,7 +1,20 @@
 volumes:
   sql_db:
 
+
 services:
+  ngi:
+    image: nginx:stable-alpine
+    restart: always
+    depends_on:
+      - app
+    volumes:
+      - ./src/main/stampo/static:/usr/share/nginx/html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    networks:
+      - front
   
   mysql_db:
     image: mysql:5.7.40-debian
@@ -18,12 +31,19 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d
       - sql_db:/var/lib/mysql
+    networks:
+      - back
 
   app:
     build: .
     restart: always
-    ports:
-      - 8080:8080
     depends_on:
       mysql_db:
         condition: service_healthy
+    networks:
+      - front
+      - back
+
+networks:
+  front:
+  back:
