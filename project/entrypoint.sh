@@ -3,7 +3,7 @@
 DB_DIALECT="MYSQL"
 DB_URL="jdbc:mysql://mysql_db:3306/lavagna?useUnicode=true&characterEncoding=utf-8&useSSL=false"
 DB_USER="root"
-DB_PASS="pass"
+DB_PASS=$MYSQL_ROOT_PASSWORD
 SPRING_PROFILE="dev"
 
 java -Xms64m -Xmx128m -Ddatasource.dialect="$DB_DIALECT" \
